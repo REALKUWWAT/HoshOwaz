@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('songs', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->foreignId('artist_id')->constrained('artists')->onDelete('cascade');
+            $table->foreignId('genre_id')->nullable()->constrained('genres')->onDelete('set null');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->string('duration')->default('3:30');
+            $table->string('audio_path')->nullable();
+            $table->string('cover_image')->nullable();
+            $table->text('lyrics')->nullable();
+            $table->unsignedBigInteger('plays_count')->default(0);
+            $table->boolean('is_featured')->default(false);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('songs');
+    }
+};
+
